@@ -1,10 +1,10 @@
--- EREN’s GUI – ONLY 2.5UUU MONEY (Perfectly Centered)
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local PlayerGui = player:WaitForChild("PlayerGui")
 
 local CorrectKey = "Eren is God"
 
+-- Key Login GUI
 local KeyGui = Instance.new("ScreenGui")
 KeyGui.Name = "ErenKeyLogin"
 KeyGui.ResetOnSpawn = false
@@ -35,7 +35,7 @@ KeyTitle.Font = Enum.Font.GothamBlack
 KeyTitle.TextSize = 50
 KeyTitle.Parent = KeyFrame
 
-local KeySubtitle = Instance.new("TextBox")
+local KeySubtitle = Instance.new("TextLabel")
 KeySubtitle.Size = UDim2.new(1, 0, 0, 40)
 KeySubtitle.Position = UDim2.new(0, 0, 0, 70)
 KeySubtitle.BackgroundTransparency = 1
@@ -83,8 +83,8 @@ local function OpenMainGUI()
     ScreenGui.Parent = PlayerGui
 
     local Frame = Instance.new("Frame")
-    Frame.Size = UDim2.new(0, 380, 0, 220)
-    Frame.Position = UDim2.new(0.5, -190, 0.5, -110)
+    Frame.Size = UDim2.new(0, 380, 0, 260)
+    Frame.Position = UDim2.new(0.5, -190, 0.5, -130)
     Frame.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
     Frame.Active = true
     Frame.Draggable = true
@@ -118,11 +118,11 @@ local function OpenMainGUI()
     Sub.TextSize = 20
     Sub.Parent = Frame
 
-    -- === PERFECTLY CENTERED 2.5UUU BUTTON ===
+    -- 2.5UUU BUTTON - PERFECTLY CENTERED & MOVED SLIGHTLY DOWN
     local NormalButton = Instance.new("TextButton")
     NormalButton.Size = UDim2.new(0.8, 0, 0, 70)
-    NormalButton.AnchorPoint = Vector2.new(0.5, 0.5)           -- This is the key!
-    NormalButton.Position = UDim2.new(0.5, 0, 0.5, 0)           -- Center of the frame
+    NormalButton.AnchorPoint = Vector2.new(0.5, 0.5)
+    NormalButton.Position = UDim2.new(0.5, 0, 0.58, 0)  -- Slightly lower (0.58 = perfect spot)
     NormalButton.BackgroundColor3 = Color3.fromRGB(0, 200, 255)
     NormalButton.Text = "2.5UUU MONEY"
     NormalButton.TextColor3 = Color3.new(1, 1, 1)
@@ -134,7 +134,7 @@ local function OpenMainGUI()
     NormCorner.CornerRadius = UDim.new(0, 14)
     NormCorner.Parent = NormalButton
 
-    -- Close Button (top-right)
+    -- Close Button
     local Close = Instance.new("TextButton")
     Close.Size = UDim2.new(0, 40, 0, 40)
     Close.Position = UDim2.new(1, -50, 0, 10)
@@ -165,7 +165,7 @@ local function OpenMainGUI()
     end)
 end
 
--- KEY LOGIN
+-- LOGIN SYSTEM
 LoginBtn.MouseButton1Click:Connect(function()
     if string.lower(KeyBox.Text) == string.lower(CorrectKey) then
         KeyBox.Text = "ACCESS GRANTED!"
@@ -181,4 +181,4 @@ LoginBtn.MouseButton1Click:Connect(function()
     end
 end)
 
-print("EREN’s GUI LOADED – Only 2.5UUU Money (Perfectly Centered)!")
+print("EREN’s GUI LOADED – 2.5UUU Button Position Fixed & Moved Slightly Down!")
