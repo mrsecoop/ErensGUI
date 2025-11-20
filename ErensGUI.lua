@@ -1,9 +1,9 @@
--- EREN’s GUI – Protected with Key "Eren is God"
+-- EREN’s GUI – Direct Execute (No HTTP, 100% Safe & Instant)
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local PlayerGui = player:WaitForChild("PlayerGui")
 
-local CorrectKey = "Eren is God"  -- exact key (case-insensitive)
+local CorrectKey = "Eren is God"  -- Case-insensitive key
 
 -- === KEY LOGIN GUI ===
 local KeyGui = Instance.new("ScreenGui")
@@ -79,7 +79,6 @@ LoginCorner.Parent = LoginBtn
 local function OpenMainGUI()
     KeyGui:Destroy()
 
-    -- Same GUI from before (Eren Premium Money Script)
     local ScreenGui = Instance.new("ScreenGui")
     ScreenGui.Name = "ErensGUI"
     ScreenGui.ResetOnSpawn = false
@@ -92,9 +91,6 @@ local function OpenMainGUI()
     Frame.Active = true
     Frame.Draggable = true
     Frame.Parent = ScreenGui
-
-    -- (rest of the GUI exactly like previous version - title, subtitle, 2 buttons, close button)
-    -- ... [same code as last message, just copied here for completeness]
 
     local Corner = Instance.new("UICorner")
     Corner.CornerRadius = UDim.new(0, 15)
@@ -134,19 +130,23 @@ local function OpenMainGUI()
     InfButton.Font = Enum.Font.GothamBold
     InfButton.TextSize = 26
     InfButton.Parent = Frame
-    Instance.new("UICorner", InfButton).CornerRadius = UDim.new(0, 12)
+    local InfCorner = Instance.new("UICorner")
+    InfCorner.CornerRadius = UDim.new(0, 12)
+    InfCorner.Parent = InfButton
 
-    -- 2.5uuu MONEY BUTTON
+    -- 2.5UUU MONEY BUTTON
     local NormalButton = Instance.new("TextButton")
     NormalButton.Size = UDim2.new(0.8, 0, 0, 60)
     NormalButton.Position = UDim2.new(0.1, 0, 0.65, 0)
     NormalButton.BackgroundColor3 = Color3.fromRGB(0, 200, 255)
-    NormalButton.Text = "2.5uuu MONEY"
+    NormalButton.Text = "2.5UUU MONEY"
     NormalButton.TextColor3 = Color3.new(1, 1, 1)
     NormalButton.Font = Enum.Font.GothamBold
     NormalButton.TextSize = 26
     NormalButton.Parent = Frame
-    Instance.new("UICorner", NormalButton).CornerRadius = UDim.new(0, 12)
+    local NormCorner = Instance.new("UICorner")
+    NormCorner.CornerRadius = UDim.new(0, 12)
+    NormCorner.Parent = NormalButton
 
     -- CLOSE BUTTON
     local Close = Instance.new("TextButton")
@@ -158,42 +158,55 @@ local function OpenMainGUI()
     Close.Font = Enum.Font.GothamBold
     Close.TextSize = 30
     Close.Parent = Frame
-    Instance.new("UICorner", Close).CornerRadius = UDim.new(0, 10)
+    local CloseCorner = Instance.new("UICorner")
+    CloseCorner.CornerRadius = UDim.new(0, 10)
+    CloseCorner.Parent = Close
     Close.MouseButton1Click:Connect(function() ScreenGui:Destroy() end)
 
-    -- BUTTON FUNCTIONS
+    -- INFINITE MONEY FUNCTION (YOUR ORIGINAL SCRIPT)
     InfButton.MouseButton1Click:Connect(function()
         InfButton.Text = "GIVING INFINITE..."
         InfButton.BackgroundColor3 = Color3.fromRGB(255, 100, 0)
         local args = {7000001, -math.huge}
         game:GetService("ReplicatedStorage"):WaitForChild("Tool"):WaitForChild("DrawUp"):WaitForChild("Msg"):WaitForChild("DrawHero"):InvokeServer(unpack(args))
-        wait(1.2); InfButton.Text = "INFINITE DONE ✓"; InfButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-        wait(1.5); InfButton.Text = "INFINITE MONEY"; InfButton.BackgroundColor3 = Color3.fromRGB(255, 0, 100)
+        wait(1.2)
+        InfButton.Text = "INFINITE DONE ✓"
+        InfButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+        wait(1.5)
+        InfButton.Text = "INFINITE MONEY"
+        InfButton.BackgroundColor3 = Color3.fromRGB(255, 0, 100)
     end)
 
+    -- 2.5UUU MONEY FUNCTION (YOUR SECOND SCRIPT)
     NormalButton.MouseButton1Click:Connect(function()
-        NormalButton.Text = "GIVING 2.5uuu..."
+        NormalButton.Text = "GIVING 2.5UUU..."
         NormalButton.BackgroundColor3 = Color3.fromRGB(255, 200, 0)
         local args = {7000065, -2000}
         game:GetService("ReplicatedStorage"):WaitForChild("Tool"):WaitForChild("DrawUp"):WaitForChild("Msg"):WaitForChild("DrawHero"):InvokeServer(unpack(args))
-        wait(1.2); NormalButton.Text = "2.5uuu DONE ✓"; NormalButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-        wait(1.5); NormalButton.Text = "2.5uuu MONEY"; NormalButton.BackgroundColor3 = Color3.fromRGB(0, 200, 255)
+        wait(1.2)
+        NormalButton.Text = "2.5UUU DONE ✓"
+        NormalButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+        wait(1.5)
+        NormalButton.Text = "2.5UUU MONEY"
+        NormalButton.BackgroundColor3 = Color3.fromRGB(0, 200, 255)
     end)
 end
 
--- === KEY CHECK ===
+-- KEY CHECK & LOGIN
 LoginBtn.MouseButton1Click:Connect(function()
     if string.lower(KeyBox.Text) == string.lower(CorrectKey) then
         KeyBox.Text = "ACCESS GRANTED!"
+        KeyBox.TextColor3 = Color3.fromRGB(0, 255, 0)
         wait(1)
         OpenMainGUI()
     else
-        KeyBox.Text = "WRONG KEY!"
+        KeyBox.Text = "WRONG KEY - TRY AGAIN!"
         KeyBox.TextColor3 = Color3.fromRGB(255, 0, 0)
         wait(2)
         KeyBox.Text = ""
         KeyBox.TextColor3 = Color3.new(1, 1, 1)
+        KeyBox.PlaceholderText = "Type key here..."
     end
 end)
 
-print("EREN’s GUI – Type the key 'Eren is God' to unlock")
+print("🚀 EREN’s GUI DIRECT LOADED! Type 'Eren is God' (any case) & LOGIN for Infinite Money King! 💰")
