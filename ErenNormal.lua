@@ -1,4 +1,4 @@
--- EREN’s GUI – INFINITE MONEY REMOVED (Only 2.5UUU Money)
+-- EREN’s GUI – ONLY 2.5UUU MONEY (Perfectly Centered)
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local PlayerGui = player:WaitForChild("PlayerGui")
@@ -35,7 +35,7 @@ KeyTitle.Font = Enum.Font.GothamBlack
 KeyTitle.TextSize = 50
 KeyTitle.Parent = KeyFrame
 
-local KeySubtitle = Instance.new("TextLabel")
+local KeySubtitle = Instance.new("TextBox")
 KeySubtitle.Size = UDim2.new(1, 0, 0, 40)
 KeySubtitle.Position = UDim2.new(0, 0, 0, 70)
 KeySubtitle.BackgroundTransparency = 1
@@ -83,7 +83,7 @@ local function OpenMainGUI()
     ScreenGui.Parent = PlayerGui
 
     local Frame = Instance.new("Frame")
-    Frame.Size = UDim2.new(0, 380, 0, 220)  -- shorter frame (only one button)
+    Frame.Size = UDim2.new(0, 380, 0, 220)
     Frame.Position = UDim2.new(0.5, -190, 0.5, -110)
     Frame.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
     Frame.Active = true
@@ -118,21 +118,23 @@ local function OpenMainGUI()
     Sub.TextSize = 20
     Sub.Parent = Frame
 
-    -- ONLY 2.5UUU MONEY BUTTON (centered)
+    -- === PERFECTLY CENTERED 2.5UUU BUTTON ===
     local NormalButton = Instance.new("TextButton")
     NormalButton.Size = UDim2.new(0.8, 0, 0, 70)
-    NormalButton.Position = UDim2.new(0.1, 0, 0.5, -35)
+    NormalButton.AnchorPoint = Vector2.new(0.5, 0.5)           -- This is the key!
+    NormalButton.Position = UDim2.new(0.5, 0, 0.5, 0)           -- Center of the frame
     NormalButton.BackgroundColor3 = Color3.fromRGB(0, 200, 255)
     NormalButton.Text = "2.5UUU MONEY"
     NormalButton.TextColor3 = Color3.new(1, 1, 1)
     NormalButton.Font = Enum.Font.GothamBold
     NormalButton.TextSize = 30
     NormalButton.Parent = Frame
+
     local NormCorner = Instance.new("UICorner")
     NormCorner.CornerRadius = UDim.new(0, 14)
     NormCorner.Parent = NormalButton
 
-    -- Close Button
+    -- Close Button (top-right)
     local Close = Instance.new("TextButton")
     Close.Size = UDim2.new(0, 40, 0, 40)
     Close.Position = UDim2.new(1, -50, 0, 10)
@@ -142,6 +144,7 @@ local function OpenMainGUI()
     Close.Font = Enum.Font.GothamBold
     Close.TextSize = 30
     Close.Parent = Frame
+
     local CloseCorner = Instance.new("UICorner")
     CloseCorner.CornerRadius = UDim.new(0, 10)
     CloseCorner.Parent = Close
@@ -178,4 +181,4 @@ LoginBtn.MouseButton1Click:Connect(function()
     end
 end)
 
-print("EREN’s GUI LOADED – Infinite Money REMOVED, Only 2.5UUU Left!")
+print("EREN’s GUI LOADED – Only 2.5UUU Money (Perfectly Centered)!")
