@@ -59,7 +59,8 @@ Content.Size = UDim2.new(1,-146,1,-40)
 Content.Position = UDim2.new(0,142,0,40)
 Content.BackgroundTransparency = 1
 
-local Worlds = {["World 1"]={["Egg 1"]=7000001,["Egg 2"]=7000002,["Egg 3"]=7000003},["World 2"]={["Egg 1"]=7000004,["Egg 2"]=7000005,["Egg 3"]=7000006},["World 3"]={["Egg 1"]=5000007,["Egg 2"]=7000008},["World 4"]={["Egg 1"]=7000009,["Egg 2"]=7000010},["World 5"]={["Egg 1"]=7000011,["Egg 2"]=7000012},["World 6"]={["Egg 1"]=7000013,["Egg 2"]=7000014},["World 7"]={["Egg 1"]=7000015,["Egg 2"]=7000016,["Egg 3"]=7000017},["World 8"]={["Egg 1"]=7000018,["Egg 2"]=7000019,["Egg 3"]=7000020},["World 9"]={["Egg 1"]=7000021,["Egg 2"]=7000022,["Egg 3"]=7000023},["World 10"]={["Egg 1"]=7000026,["Egg 2"]=7000027,["Egg 3"]=7000028},["World 11"]={["Egg 1"]=7000029,["Egg 2"]=7000030},["World 12"]={["Egg 1"]=7000031,["Egg 2"]=7000032,["Egg 3"]=7000033},["World 13"]={["Egg 1"]=7000036,["Egg 2"]=7000037,["Egg 3"]=7000038},["World 14"]={["Egg 1"]=7000039,["Egg 2"]=7000040,["Egg 3"]=7000041},["World 15"]={["Egg 1"]=7000046,["Egg 2"]=7000047,["Egg 3"]=7000048},["World 16"]={["Egg 1"]=7000049,["Egg 2"]=7000050,["Egg 3"]=7000051},["World 17"]={["Egg 1"]=7000053,["Egg 2"]=7000054,["Egg 3"]=7000055},["World 18"]={["Egg 1"]=7000059,["Egg 2"]=7000060,["Egg 3"]=7000061},["World 19"]={["Egg 1"]=7000063,["Egg 2"]=7000064,["Egg 3"]=7000065},["World 20"]={["Egg 1"]=7000069,["Egg 2"]=7000070,["Egg 3"]=7000071}}
+local Worlds = {["World 1"]={["Egg 1"]=7000001,["Egg 2"]=7000002,["Egg 3"]=7000003},["World 2"]={["Egg 1"]=7000004,["Egg 2"]=7000005,["Egg 3"]=7000006},["World 3"]={["Egg 1"]=5000007,["Egg 2"]=7000008},["World 4"]={["Egg 1"]=7000009,["Egg 2"]=7000010},["World 5"]={["Egg 1"]=7000011,["Egg 2"]=7000012},["World 6"]={["Egg 1"]=7000013,["Egg 2"]=7000014},["World 7"]={["Egg 1"]=7000015,["Egg 2"]=7000016,["Egg 3"]=7000017},["World 8"]={["Egg 1"]=7000018,["Egg 2"]=7000019,["Egg 3"]=7000020},["World 9"]={["Egg 1"]=7000021,["Egg 2"]=7000022,["Egg 3"]=7000023},["World 10"]={["Egg 1"]=7000026,["Egg 2"]=7000027,["Egg 3"]=7000028},["World 11"]={["Egg 1"]=7000029,["Egg 2"]=7000030},["World 12"]={["Egg 1"]=7000031,["Egg 2"]=7000032,["Egg 3"]=7000033},["World 13"]={["Egg 1"]=7000036,["Egg 2"]=7000037,["Egg 3"]=7000038},["World 14"]={["Egg 1"]=7000039,["Egg 2"]=7000040,["Egg 3"]=7000041},["World 15"]={["Egg 1"]=7000046,["Egg 2"]=7000047,["Egg 3"]=7000048},["World 16"]={["Egg 1"]=7000049,["Egg 2"]=7000050,["Egg 3"]=7000051},["World 17"]={["Egg 1"]=7000053,["Egg 2"]=7000054,["Egg 3"]=7000055},["World 18"]={["Egg 1"]=7000059,["Egg 2"]=7000060,["Egg 3"]=7000061},["World 19"]={["Egg 1"]=7000063,["Egg 2"]=7000064,["Egg 3"]=7000065},["World 20"]={["Egg 1"]=7000069,["Egg 2"]=7000070,["Egg 3"]=7000071},
+["World 21"]={["Egg 1"]=7000074,["Egg 2"]=7000075,["Egg 3"]=7000076}} -- ← FIXED WITH 70000 PREFIX
 
 local selWorld, selEgg, selID, selAmt = nil,nil,nil,1
 local running = false
@@ -205,7 +206,7 @@ local function Hatcher()
     end
 
     local wlist = {}
-    for i=1,20 do wlist[i] = "World "..i end
+    for i=1,21 do wlist[i] = "World "..i end
     Drop(wbtn, wlist, function(w)
         selWorld = w
         wbtn.Text = "  🌍 "..w
@@ -245,10 +246,10 @@ Menu("Auto Hatcher","⚡",Hatcher)
 -- MINIMIZE / REOPEN LOGIC (FIRST TIME CENTER, AFTER THAT REMEMBERS YOUR DRAG POSITION)
 Minimize.MouseButton1Click:Connect(function()
     if FirstMinimize then
-        MiniIcon.Position = UDim2.new(0.5, -24, 0.5, -24)  -- first time always middle
+        MiniIcon.Position = UDim2.new(0.5, -24, 0.5, -24)
         FirstMinimize = false
     else
-        MiniIcon.Position = MiniIcon.Position  -- keep current dragged position
+        MiniIcon.Position = MiniIcon.Position
     end
     Main.Visible = false
     MiniIcon.Visible = true
