@@ -53,14 +53,16 @@ Instance.new("UIGradient", MiniIcon).Color = ColorSequence.new{
 }
 Instance.new("UIStroke", MiniIcon).Thickness = 2.5
 
+-- LEFT MENU - PERFECT CENTER + NO HORIZONTAL SCROLL
 local LeftScroll = Instance.new("ScrollingFrame", Main)
 LeftScroll.Size = UDim2.new(0,138,1,-40)
 LeftScroll.Position = UDim2.new(0,0,0,40)
 LeftScroll.BackgroundColor3 = Color3.fromRGB(24,24,36)
 LeftScroll.ScrollBarThickness = 4
-LeftScroll.ScrollingDirection = Enum.ScrollingDirection.Y
 LeftScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
-LeftScroll.HorizontalScrollBarInset = Enum.ScrollBarInset.Always
+LeftScroll.CanvasSize = UDim2.new(0,0,0,0)
+LeftScroll.ScrollingDirection = Enum.ScrollingDirection.Y
+LeftScroll.HorizontalScrollBarInset = Enum.ScrollBarInset.ScrollBar
 Instance.new("UICorner", LeftScroll).CornerRadius = UDim.new(0,10)
 
 local Left = Instance.new("Frame", LeftScroll)
@@ -68,6 +70,7 @@ Left.Size = UDim2.new(1,0,0,0)
 Left.BackgroundTransparency = 1
 local leftLayout = Instance.new("UIListLayout", Left)
 leftLayout.Padding = UDim.new(0,8)
+leftLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 
 local Content = Instance.new("Frame", Main)
 Content.Size = UDim2.new(1,-146,1,-40)
@@ -105,7 +108,8 @@ local FirstMinimize = true
 local superAutoEnabled = false
 local noClipEnabled = false
 local infJumpEnabled = false
-local noClipConnection, infJumpConnection
+local autoClaimGiftsEnabled = false
+local noClipConnection, infJumpConnection, autoGiftConnection
 local selectedPlayer = nil
 local continuousTP = false
 local tpConnection
@@ -121,13 +125,14 @@ end
 
 local function Menu(icon, name, func)
     local b = Instance.new("TextButton", Left)
-    b.Size = UDim2.new(1,-16,0,48)
+    b.Size = UDim2.new(1,-20,0,48)
     b.BackgroundColor3 = Color3.fromRGB(35,35,55)
-    b.Text = icon.." "..name
+    b.Text = icon.."  "..name
     b.TextColor3 = Color3.fromRGB(180,255,180)
     b.Font = Enum.Font.GothamBold
     b.TextSize = 16
-    b.TextXAlignment = Enum.TextXAlignment.Left
+    b.TextXAlignment = Enum.TextXAlignment.Center
+    b.TextYAlignment = Enum.TextYAlignment.Center
     Instance.new("UICorner", b).CornerRadius = UDim.new(0,9)
     b.MouseButton1Click:Connect(function()
         for _,v in pairs(Left:GetChildren()) do if v:IsA("TextButton") then v.BackgroundColor3 = Color3.fromRGB(35,35,55) end end
@@ -143,8 +148,11 @@ local function ShowGUIs()
     local s = Instance.new("ScrollingFrame", Content)
     s.Size = UDim2.new(1,0,1,0)
     s.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    s.CanvasSize = UDim2.new(0,0,0,0)
     s.ScrollBarThickness = 6
     s.BackgroundTransparency = 1
+    s.ScrollingDirection = Enum.ScrollingDirection.Y
+    s.HorizontalScrollBarInset = Enum.ScrollBarInset.ScrollBar
     local layout = Instance.new("UIListLayout", s)
     layout.Padding = UDim.new(0,8)
 
@@ -240,6 +248,9 @@ local function Hatcher()
         currentDropdown.BackgroundColor3 = Color3.fromRGB(30,30,50)
         currentDropdown.ScrollBarThickness = 5
         currentDropdown.AutomaticCanvasSize = Enum.AutomaticSize.Y
+        currentDropdown.CanvasSize = UDim2.new(0,0,0,0)
+        currentDropdown.ScrollingDirection = Enum.ScrollingDirection.Y
+        currentDropdown.HorizontalScrollBarInset = Enum.ScrollBarInset.ScrollBar
         Instance.new("UICorner", currentDropdown).CornerRadius = UDim.new(0,9)
         local layout = Instance.new("UIListLayout", currentDropdown)
         layout.Padding = UDim.new(0,2)
@@ -288,6 +299,9 @@ local function Hatcher()
         currentDropdown.BackgroundColor3 = Color3.fromRGB(30,30,50)
         currentDropdown.ScrollBarThickness = 5
         currentDropdown.AutomaticCanvasSize = Enum.AutomaticSize.Y
+        currentDropdown.CanvasSize = UDim2.new(0,0,0,0)
+        currentDropdown.ScrollingDirection = Enum.ScrollingDirection.Y
+        currentDropdown.HorizontalScrollBarInset = Enum.ScrollBarInset.ScrollBar
         Instance.new("UICorner", currentDropdown).CornerRadius = UDim.new(0,9)
         local layout = Instance.new("UIListLayout", currentDropdown)
         layout.Padding = UDim.new(0,2)
@@ -357,9 +371,13 @@ local function Special()
     scroll.BackgroundTransparency = 1
     scroll.ScrollBarThickness = 4
     scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    scroll.CanvasSize = UDim2.new(0,0,0,0)
+    scroll.ScrollingDirection = Enum.ScrollingDirection.Y
+    scroll.HorizontalScrollBarInset = Enum.ScrollBarInset.ScrollBar
     local layout = Instance.new("UIListLayout", scroll)
     layout.Padding = UDim.new(0,10)
 
+    -- Super Auto
     local r1 = Instance.new("Frame", scroll)
     r1.Size = UDim2.new(1,0,0,44)
     r1.BackgroundTransparency = 1
@@ -384,9 +402,12 @@ local function Special()
         superAutoEnabled = not superAutoEnabled
         t1.BackgroundColor3 = superAutoEnabled and Color3.fromRGB(60,255,60) or Color3.fromRGB(200,40,40)
         t1.Text = superAutoEnabled and "ON" or "OFF"
-        pcall(function() ReplicatedStorage.ServerMsg.Setting:InvokeServer("isAutoCllect", superAutoEnabled and 1 or 0) end)
+        pcall(function()
+            ReplicatedStorage.ServerMsg.Setting:InvokeServer("isAutoCllect", superAutoEnabled and 1 or 0)
+        end)
     end)
 
+    -- NoClip
     local r2 = Instance.new("Frame", scroll)
     r2.Size = UDim2.new(1,0,0,44)
     r2.BackgroundTransparency = 1
@@ -412,14 +433,22 @@ local function Special()
         t2.BackgroundColor3 = noClipEnabled and Color3.fromRGB(60,255,60) or Color3.fromRGB(200,40,40)
         t2.Text = noClipEnabled and "ON" or "OFF"
         if noClipEnabled then
+            if noClipConnection then noClipConnection:Disconnect() end
             noClipConnection = RunService.Stepped:Connect(function()
-                for _,v in (Players.LocalPlayer.Character or {}):GetDescendants() do if v:IsA("BasePart") then v.CanCollide = false end end
+                if Players.LocalPlayer.Character then
+                    for _, v in Players.LocalPlayer.Character:GetDescendants() do
+                        if v:IsA("BasePart") then
+                            v.CanCollide = false
+                        end
+                    end
+                end
             end)
         else
             if noClipConnection then noClipConnection:Disconnect() end
         end
     end)
 
+    -- Infinite Jump
     local r3 = Instance.new("Frame", scroll)
     r3.Size = UDim2.new(1,0,0,44)
     r3.BackgroundTransparency = 1
@@ -445,6 +474,7 @@ local function Special()
         t3.BackgroundColor3 = infJumpEnabled and Color3.fromRGB(60,255,60) or Color3.fromRGB(200,40,40)
         t3.Text = infJumpEnabled and "ON" or "OFF"
         if infJumpEnabled then
+            if infJumpConnection then infJumpConnection:Disconnect() end
             infJumpConnection = UserInputService.JumpRequest:Connect(function()
                 if Players.LocalPlayer.Character then
                     Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
@@ -452,6 +482,45 @@ local function Special()
             end)
         else
             if infJumpConnection then infJumpConnection:Disconnect() end
+        end
+    end)
+
+    -- Auto Claim Gifts
+    local r4 = Instance.new("Frame", scroll)
+    r4.Size = UDim2.new(1,0,0,44)
+    r4.BackgroundTransparency = 1
+    local l4 = Instance.new("TextLabel", r4)
+    l4.Size = UDim2.new(1,-90,1,0)
+    l4.BackgroundTransparency = 1
+    l4.Text = "🎁 Auto Claim Gifts"
+    l4.TextColor3 = Color3.fromRGB(200,255,200)
+    l4.Font = Enum.Font.GothamBold
+    l4.TextSize = 18
+    l4.TextXAlignment = Enum.TextXAlignment.Left
+    local t4 = Instance.new("TextButton", r4)
+    t4.Size = UDim2.new(0,70,0,36)
+    t4.Position = UDim2.new(1,-80,0.5,-18)
+    t4.BackgroundColor3 = autoClaimGiftsEnabled and Color3.fromRGB(60,255,60) or Color3.fromRGB(200,40,40)
+    t4.Text = autoClaimGiftsEnabled and "ON" or "OFF"
+    t4.TextColor3 = Color3.new(1,1,1)
+    t4.Font = Enum.Font.GothamBold
+    t4.TextSize = 16
+    Instance.new("UICorner", t4).CornerRadius = UDim.new(0,10)
+    t4.MouseButton1Click:Connect(function()
+        autoClaimGiftsEnabled = not autoClaimGiftsEnabled
+        t4.BackgroundColor3 = autoClaimGiftsEnabled and Color3.fromRGB(60,255,60) or Color3.fromRGB(200,40,40)
+        t4.Text = autoClaimGiftsEnabled and "ON" or "OFF"
+        if autoClaimGiftsEnabled then
+            task.spawn(function()
+                while autoClaimGiftsEnabled do
+                    for i = 1, 12 do
+                        if not autoClaimGiftsEnabled then break end
+                        pcall(function() RemoteEvent:FireServer("GetOnlineAward", i) end)
+                        task.wait(0.1)
+                    end
+                    task.wait(5)
+                end
+            end)
         end
     end)
 end
@@ -501,11 +570,14 @@ local function FUN()
     playerBtn.MouseButton1Click:Connect(function()
         destroyCurrentDropdown()
         currentDropdown = Instance.new("ScrollingFrame", Content)
-        currentDropdown.Size = UDim2.new(1,-20,0,140)
+        currentDropdown.Size = UDim2.new(1,-20,0,160)
         currentDropdown.Position = playerBtn.Position + UDim2.new(0,0,0,46)
         currentDropdown.BackgroundColor3 = Color3.fromRGB(30,30,50)
         currentDropdown.ScrollBarThickness = 5
         currentDropdown.AutomaticCanvasSize = Enum.AutomaticSize.Y
+        currentDropdown.CanvasSize = UDim2.new(0,0,0,0)
+        currentDropdown.ScrollingDirection = Enum.ScrollingDirection.Y
+        currentDropdown.HorizontalScrollBarInset = Enum.ScrollBarInset.ScrollBar
         Instance.new("UICorner", currentDropdown).CornerRadius = UDim.new(0,9)
         local layout = Instance.new("UIListLayout", currentDropdown)
         layout.Padding = UDim.new(0,4)
@@ -530,14 +602,11 @@ local function FUN()
     end)
 
     local function teleport()
-        if not selectedPlayer or not selectedPlayer.Character then return end
-        local target = selectedPlayer.Character
-        local me = Players.LocalPlayer.Character
-        if not me or not me:FindFirstChild("HumanoidRootPart") then return end
-        local hrp = me.HumanoidRootPart
-        local targetHRP = target:FindFirstChild("HumanoidRootPart") or target:FindFirstChild("Torso")
-        if not targetHRP then return end
-        hrp.CFrame = targetHRP.CFrame
+        if not selectedPlayer or not selectedPlayer.Character or not selectedPlayer.Character:FindFirstChild("HumanoidRootPart") then return end
+        local hrp = Players.LocalPlayer.Character and Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if hrp then
+            hrp.CFrame = selectedPlayer.Character.HumanoidRootPart.CFrame
+        end
     end
 
     tpOnce.MouseButton1Click:Connect(teleport)
@@ -548,9 +617,12 @@ local function FUN()
         tpContToggle.Text = continuousTP and "CONTINUOUS ON" or "CONTINUOUS OFF"
         if continuousTP then
             if tpConnection then tpConnection:Disconnect() end
-            tpConnection = RunService.RenderStepped:Connect(teleport)
+            tpConnection = RunService.Stepped:Connect(function()
+                teleport()
+                task.wait(0.0000005)
+            end)
         else
-            if tpConnection then tpConnection:Disconnect() tpConnection = nil end
+            if tpConnection then tpConnection:Disconnect() end
         end
     end)
 end
@@ -588,41 +660,36 @@ local function TeleportWorld()
     tpBtn.TextSize = 20
     Instance.new("UICorner", tpBtn).CornerRadius = UDim.new(0,10)
 
-    local function Drop(btn,items,cb)
-        btn.MouseButton1Click:Connect(function()
-            destroyCurrentDropdown()
-            currentDropdown = Instance.new("ScrollingFrame", Content)
-            currentDropdown.Size = UDim2.new(1,-14,0,120)
-            currentDropdown.Position = btn.Position + UDim2.new(0,0,0,46)
-            currentDropdown.BackgroundColor3 = Color3.fromRGB(30,30,50)
-            currentDropdown.ScrollBarThickness = 5
-            currentDropdown.AutomaticCanvasSize = Enum.AutomaticSize.Y
-            Instance.new("UICorner", currentDropdown).CornerRadius = UDim.new(0,9)
-            local layout = Instance.new("UIListLayout", currentDropdown)
-            layout.Padding = UDim.new(0,2)
+    worldBtn.MouseButton1Click:Connect(function()
+        destroyCurrentDropdown()
+        currentDropdown = Instance.new("ScrollingFrame", Content)
+        currentDropdown.Size = UDim2.new(1,-14,0,160)
+        currentDropdown.Position = worldBtn.Position + UDim2.new(0,0,0,46)
+        currentDropdown.BackgroundColor3 = Color3.fromRGB(30,30,50)
+        currentDropdown.ScrollBarThickness = 5
+        currentDropdown.AutomaticCanvasSize = Enum.AutomaticSize.Y
+        currentDropdown.CanvasSize = UDim2.new(0,0,0,0)
+        currentDropdown.ScrollingDirection = Enum.ScrollingDirection.Y
+        currentDropdown.HorizontalScrollBarInset = Enum.ScrollBarInset.ScrollBar
+        Instance.new("UICorner", currentDropdown).CornerRadius = UDim.new(0,9)
+        local layout = Instance.new("UIListLayout", currentDropdown)
+        layout.Padding = UDim.new(0,2)
 
-            for _,it in ipairs(items) do
-                local o = Instance.new("TextButton", currentDropdown)
-                o.Size = UDim2.new(1,-8,0,34)
-                o.BackgroundColor3 = Color3.fromRGB(50,50,70)
-                o.Text = "  🌍 "..it
-                o.TextColor3 = Color3.new(1,1,1)
-                o.Font = Enum.Font.GothamBold
-                o.TextSize = 15
-                Instance.new("UICorner", o).CornerRadius = UDim.new(0,8)
-                o.MouseButton1Click:Connect(function()
-                    cb(it)
-                    destroyCurrentDropdown()
-                end)
-            end
-        end)
-    end
-
-    local wlist = {}
-    for i=1,21 do table.insert(wlist,"World "..i) end
-    Drop(worldBtn, wlist, function(w)
-        selectedWorldNum = tonumber(w:match("%d+"))
-        worldBtn.Text = "🌍 World "..selectedWorldNum
+        for i = 1, 21 do
+            local o = Instance.new("TextButton", currentDropdown)
+            o.Size = UDim2.new(1,-8,0,36)
+            o.BackgroundColor3 = Color3.fromRGB(50,50,70)
+            o.Text = "  🌍 World "..i
+            o.TextColor3 = Color3.new(1,1,1)
+            o.Font = Enum.Font.GothamBold
+            o.TextSize = 15
+            Instance.new("UICorner", o).CornerRadius = UDim.new(0,8)
+            o.MouseButton1Click:Connect(function()
+                selectedWorldNum = i
+                worldBtn.Text = "🌍 World "..i
+                destroyCurrentDropdown()
+            end)
+        end
     end)
 
     tpBtn.MouseButton1Click:Connect(function()
@@ -660,4 +727,4 @@ MiniIcon.MouseButton1Click:Connect(function()
 end)
 
 ShowGUIs()
-print("☣️ EREN HUB LOADED – 100% PERFECT & WORKING 🔥")
+print("☣️ EREN HUB FINAL – 100% EXECUTABLE, PERFECT SCROLL & CENTERED 🔥")
